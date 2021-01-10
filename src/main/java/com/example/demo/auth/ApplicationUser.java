@@ -32,6 +32,18 @@ public class ApplicationUser implements UserDetails {
         this.isEnabled = isEnabled;
     }
 
+    public ApplicationUser(String username,
+                           String password,
+                           Set<? extends GrantedAuthority> grantedAuthorities) {
+        this.username = username;
+        this.password = password;
+        this.grantedAuthorities = grantedAuthorities;
+        this.isAccountNonExpired = true;
+        this.isAccountNonLocked = true;
+        this.isCredentialsNonExpired = true;
+        this.isEnabled = true;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return grantedAuthorities;
