@@ -2,6 +2,8 @@ package com.example.demo.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.checkerframework.common.aliasing.qual.Unique;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -16,7 +18,7 @@ import java.util.Set;
 public class Viewer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotEmpty
@@ -32,7 +34,7 @@ public class Viewer {
 
     public Viewer addMovie(Movie movie){
         movie.setViewer(this);
-        this.addMovie(movie);
+        this.movies.add(movie);
         return this;
     }
 }

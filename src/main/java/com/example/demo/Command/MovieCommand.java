@@ -5,6 +5,7 @@ import com.example.demo.model.Viewer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.URL;
 
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -30,6 +31,8 @@ public class MovieCommand {
     @Min(10)
     @Max(240)
     private Long duration;
+
+    @URL
     private String source;
     private Genre genre;
 

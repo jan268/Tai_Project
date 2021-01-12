@@ -6,7 +6,7 @@ public interface MovieService {
 
     MovieCommand findByViewerIdAndMovieId(Long viewerId, Long movieId);
 
-    MovieCommand saveIngredientCommand(MovieCommand command);
+    MovieCommand saveMovieCommand(MovieCommand command);
 
     void deleteById(Long recipeId, Long idToDelete);
 }

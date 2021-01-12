@@ -2,6 +2,7 @@ package com.example.demo.Services;
 
 import com.example.demo.Command.ViewerCommand;
 import com.example.demo.model.Viewer;
+import javassist.NotFoundException;
 
 import java.util.Set;
 
