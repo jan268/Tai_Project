@@ -1,5 +1,7 @@
 package com.example.demo.Command;
 
+import com.example.demo.Validation.UniqueEmail;
+import com.example.demo.Validation.UniqueUsername;
 import com.example.demo.model.Movie;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,10 +20,12 @@ public class ViewerCommand {
     private Long id;
 
     @NotBlank
+    @UniqueUsername
     private String username;
 
     @Email
     @NotBlank
+    @UniqueEmail
     private String email;
 
     private Set<MovieCommand> movies = new HashSet<>();

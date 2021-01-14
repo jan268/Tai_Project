@@ -1,9 +1,8 @@
 package com.example.demo.model;
 
+import com.example.demo.Validation.UniqueUsername;
 import lombok.Getter;
 import lombok.Setter;
-import org.checkerframework.common.aliasing.qual.Unique;
-import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;

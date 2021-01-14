@@ -58,9 +58,21 @@ public class ViewerServiceImpl implements ViewerService {
     @Transactional
     @Override
     public ViewerCommand saveRecipeCommand(ViewerCommand command) {
-        Viewer detachedRecipe = viewerCommandToViewer.convert(command);
+        Viewer detachedViewer = viewerCommandToViewer.convert(command);
 
-        Viewer savedViewer = viewerRepository.save(detachedRecipe);
+//        Set<Viewer> viewerSet = new HashSet<>();
+//        viewerRepository.findAll().iterator().forEachRemaining(viewerSet::add);
+//
+//        if(viewerSet.stream().filter(viewer -> viewer.getUsername().equals(detachedViewer.getUsername()))
+//                .findFirst().isPresent()){
+//                return
+//        }else {
+//            Viewer savedViewer = viewerRepository.save(detachedViewer);
+//            log.debug("Saved viewer id: " + savedViewer.getId());
+//            return viewerToViewerCommand.convert(savedViewer);
+//        }
+
+        Viewer savedViewer = viewerRepository.save(detachedViewer);
         log.debug("Saved viewer id: " + savedViewer.getId());
         return viewerToViewerCommand.convert(savedViewer);
     }

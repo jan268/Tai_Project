@@ -26,7 +26,7 @@
                 <a class="nav-link" href="#" th:href="@{'/'}">Viewers</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" th:href="@{'/'}">Back</a>
+                <a class="nav-link" href="#" th:href="@{'/viewer/' + ${movie.viewerId} + '/show'}">Back</a>
             </li>
         </ul>
     </div>
@@ -36,43 +36,78 @@
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <div class="panel panel-primary">
+            <!--/*@thymesVar id="ingredient" type="guru.springframework.commands.IngredientCommand"*/-->
+            <form  th:object="${movie}" th:action="@{'/viewer/' + ${movie.viewerId} + '/movieUpdate'} " method="post">
 
-                <div class="panel-heading">
-                    <div class="row">
-                        <div class="col-md-11 ">
-                            <h1 class="panel-title">Movies</h1>
+                <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+                    <p>Please Correct Errors Below</p>
+                </div>
+
+                <input type="hidden" th:field="*{id}"/>
+                <div class="pannel-group">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h1 class="panel-title">Edit Movie Information</h1>
                         </div>
-                        <div class="col-md-1">
-                            <a class="btn btn-default" href="#" th:href="@{'/viewer/' + ${viewer.id} + '/movie/new'}" role="button">New</a>
+                        <div class="panel-body">
+
+
+                            <div class="row">
+                                <div class="col-md-3 form-group" th:class="${#fields.hasErrors('title')}
+                                ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
+                                    <label>Movie Title:</label>
+                                    <input type="text" class="form-control" th:field="*{title}" th:errorclass="has-error"/>
+                                    <span class="help-block" th:if="${#fields.hasErrors('title')}">
+                                        <ul>
+                                            <li th:each="err : ${#fields.errors('description')}" th:text="${err}"/>
+                                        </ul>
+                                    </span>
+                                </div>
+                                <div class="col-md-3 form-group" th:class="${#fields.hasErrors('director')}
+                                ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
+                                    <label>Director:</label>
+                                    <input type="text" class="form-control" th:field="*{director}" th:errorclass="has-error"/>
+                                    <span class="help-block" th:if="${#fields.hasErrors('director')}">
+                                        <ul>
+                                            <li th:each="err : ${#fields.errors('director')}" th:text="${err}"/>
+                                        </ul>
+                                    </span>
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label>Genre:</label>
+                                    <select class="form-control" th:field="*{genre}">
+                                        <option th:each="genreValue : ${T(com.example.demo.model.Genre).values()}"
+                                                th:value="${genreValue.name()}"
+                                                th:text="${genreValue.name()}"
+                                        >val</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 form-group" th:class="${#fields.hasErrors('duration')}
+                                ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
+                                    <label>Duration:</label>
+                                    <input type="number" class="form-control" th:field="*{duration}" th:errorclass="has-error"/>
+                                    <span class="help-block" th:if="${#fields.hasErrors('duration')}">
+                                        <ul>
+                                            <li th:each="err : ${#fields.errors('duration')}" th:text="${err}"/>
+                                        </ul>
+                                    </span>
+                                </div>
+                                <div class="col-md-3 form-group" th:class="${#fields.hasErrors('source')}
+                                ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
+                                    <label>Source:</label>
+                                    <input type="text" class="form-control" th:field="*{source}" th:errorclass="has-error"/>
+                                    <span class="help-block" th:if="${#fields.hasErrors('source')}">
+                                        <ul>
+                                            <li th:each="err : ${#fields.errors('source')}" th:text="${err}"/>
+                                        </ul>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
-                <div class="panel-body">
-
-                    <div class="table-responsive" th:if="${not #lists.isEmpty(viewer.movies)}">
-                        <table class="table table-hover ">
-                            <thead class="thead-inverse">
-                            <tr>
-                                <th>ID</th>
-                                <th>Title - Director</th>
-                                <th>View</th>
-                                <th>Update</th>
-                                <th>Delete</th>
-                            </tr>
-                            </thead>
-                            <tr th:each="movie : ${viewer.movies}">
-                                <td th:text="${movie.id}">334</td>
-                                <td th:text="${movie.getTitle()} + ' - ' + ${movie.getDirector()}">Tasty Goodnees 3</td>
-                                <td><a href="#" th:href="@{'/viewer/' + ${viewer.id} + '/' + ${movie.id} + '/show'}">View</a></td>
-                                <td><a href="#" th:href="@{'/viewer/' + ${viewer.id} + '/' + ${movie.id} + '/update'}">Update</a></td>
-                                <td><a href="#" th:href="@{'/viewer/' + ${viewer.id} + '/' + ${movie.id} + '/delete'}">Delete</a></td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>
