@@ -1,6 +1,7 @@
 package com.example.demo.contoller;
 
 import com.example.demo.Command.MovieCommand;
+import com.example.demo.Command.ViewerCommand;
 import com.example.demo.Services.MovieService;
 import com.example.demo.Services.ViewerService;
 import lombok.extern.slf4j.Slf4j;
@@ -42,16 +43,23 @@ public class MovieController {
         return "/viewer/movie/movieform";
     }
 
-    @GetMapping("/viewer/{viewerId}/{movieId}/new")
-    public String newMovie(Model model){
+    @GetMapping("/viewer/{viewerId}/movie/new")
+    public String newMovie(@PathVariable Long viewerId, Model model){
 
-        model.addAttribute("movie", new MovieCommand());
+        //need to return back parent id for hidden form property
+        MovieCommand movieCommand = new MovieCommand();
+        movieCommand.setViewerId(viewerId);
+
+        model.addAttribute("movie", movieCommand);
+
+        System.out.println(movieCommand.getId());
+        System.out.println(movieCommand.getViewerId());
 
         return "/viewer/movie/movieform";
     }
 
     @PostMapping("/viewer/{viewerId}/movieUpdate")
-    public String saveOrUpdate(@Valid @ModelAttribute MovieCommand command, BindingResult bindingResult){
+    public String saveOrUpdate(@Valid @ModelAttribute("movie") MovieCommand command, BindingResult bindingResult){
 
         if (bindingResult.hasErrors()){
             bindingResult.getAllErrors().forEach(objectError -> {
@@ -59,6 +67,8 @@ public class MovieController {
             });
             return "/viewer/movie/movieform";
         }
+        System.out.println(command.getId());
+        System.out.println(command.getViewerId());
 
         MovieCommand savedCommand = movieService.saveMovieCommand(command);
 

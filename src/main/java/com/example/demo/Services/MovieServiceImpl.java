@@ -56,12 +56,12 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public MovieCommand saveMovieCommand(MovieCommand command) {
 
-        Optional<Viewer> viewerOptional = viewerRepository.findById(command.getId());
+        Optional<Viewer> viewerOptional = viewerRepository.findById(command.getViewerId());
 
         if(!viewerOptional.isPresent()){
 
             //todo toss error if not found!
-            log.error("View not found for id: " + command.getViewerId());
+            log.error("Viewer not found for id: " + command.getViewerId());
             return new MovieCommand();
         }
 
@@ -94,7 +94,7 @@ public class MovieServiceImpl implements MovieService {
             Viewer savedViewer = viewerRepository.save(viewer);
 
             Optional<Movie> savedMovieOptional = savedViewer.getMovies().stream()
-                    .filter(ViewerMovie -> ViewerMovie.getId().equals(command.getId()))
+                    .filter(viewerMovie -> viewerMovie.getId().equals(command.getId()))
                     .findFirst();
 
             //check by description

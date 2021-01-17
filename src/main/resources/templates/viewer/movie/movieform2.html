@@ -26,7 +26,7 @@
                 <a class="nav-link" href="#" th:href="@{'/'}">Viewers</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" th:href="@{'/viewer/' + ${movie.viewerId} + '/show'}">Back</a>
+                <a class="nav-link" href="#" th:href="@{'/viewer/' + ${viewerId} + '/show'}">Back</a>
             </li>
         </ul>
     </div>
@@ -37,7 +37,7 @@
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <!--/*@thymesVar id="ingredient" type="guru.springframework.commands.IngredientCommand"*/-->
-            <form  th:object="${movie}" th:action="@{'/viewer/' + ${movie.viewerId} + '/movieUpdate'} " method="post">
+            <form  th:object="${movie}" th:action="@{'/viewer/' + ${viewerId} + '/movieUpdate'} " method="post">
 
                 <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
                     <p>Please Correct Errors Below</p>
@@ -59,7 +59,7 @@
                                     <input type="text" class="form-control" th:field="*{title}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('title')}">
                                         <ul>
-                                            <li th:each="err : ${#fields.errors('title')}" th:text="${err}"/>
+                                            <li th:each="err : ${#fields.errors('description')}" th:text="${err}"/>
                                         </ul>
                                     </span>
                                 </div>

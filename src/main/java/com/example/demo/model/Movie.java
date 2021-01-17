@@ -36,4 +36,7 @@ public class Movie {
 
     @ManyToOne
     private Viewer viewer;
+
+    public Movie() {
+    }
 }
