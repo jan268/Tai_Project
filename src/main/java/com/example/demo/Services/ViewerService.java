@@ -14,7 +14,7 @@ public interface ViewerService {
 
     ViewerCommand findCommandById(Long l);
 
-    ViewerCommand saveRecipeCommand(ViewerCommand command);
+    ViewerCommand saveViewerCommand(ViewerCommand command);
 
     void deleteById(Long idToDelete);
 }

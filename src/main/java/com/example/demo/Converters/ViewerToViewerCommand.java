@@ -29,6 +29,7 @@ public class ViewerToViewerCommand implements Converter<Viewer, ViewerCommand> {
         final ViewerCommand viewer =new ViewerCommand();
         viewer.setId(source.getId());
         viewer.setUsername(source.getUsername());
+        viewer.setPassword(source.getPassword());
         viewer.setEmail(source.getEmail());
         if (source.getMovies() != null && source.getMovies().size() > 0){
             source.getMovies()

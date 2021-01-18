@@ -10,7 +10,7 @@ import java.util.Optional;
 
 import static com.example.demo.security.ApplicationUserRole.*;
 
-@Repository("fake")
+//@Repository("fake")
 public class FakeApplicationUserDaoService implements ApplicationUserDao {
 
     private final PasswordEncoder passwordEncoder;

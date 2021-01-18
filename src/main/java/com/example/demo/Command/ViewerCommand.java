@@ -23,6 +23,9 @@ public class ViewerCommand {
     @UniqueUsername
     private String username;
 
+    @NotBlank
+    private String password;
+
     @Email
     @NotBlank
     @UniqueEmail

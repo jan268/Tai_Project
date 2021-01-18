@@ -73,7 +73,7 @@ public class ViewerController {
             });
             return "viewer/viewerform";
         }else {
-            viewerService.saveRecipeCommand(command);
+            viewerService.saveViewerCommand(command);
 
             return "redirect:/";
         }

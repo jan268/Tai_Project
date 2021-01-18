@@ -6,15 +6,18 @@ import com.example.demo.model.Viewer;
 import com.example.demo.repositories.ViewerRepository;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
 public class BootStrapMySQL implements ApplicationListener<ContextRefreshedEvent> {
 
     private final ViewerRepository viewerRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public BootStrapMySQL(ViewerRepository viewerRepository) {
+    public BootStrapMySQL(ViewerRepository viewerRepository, PasswordEncoder passwordEncoder) {
         this.viewerRepository = viewerRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -23,6 +26,7 @@ public class BootStrapMySQL implements ApplicationListener<ContextRefreshedEvent
         Viewer jan = new Viewer();
         jan.setEmail("jan.witek88@gmail.com");
         jan.setUsername("Jan");
+        jan.setPassword(passwordEncoder.encode("password"));
 
 
         Movie swotr = new Movie();

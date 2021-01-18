@@ -6,6 +6,10 @@ import com.example.demo.Converters.ViewerToViewerCommand;
 import com.example.demo.model.Viewer;
 import com.example.demo.repositories.ViewerRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,16 +19,18 @@ import java.util.Set;
 
 @Service
 @Slf4j
-public class ViewerServiceImpl implements ViewerService {
+public class ViewerServiceImpl implements ViewerService, UserDetailsService {
 
     private final ViewerRepository viewerRepository;
     private final ViewerToViewerCommand viewerToViewerCommand;
     private final ViewerCommandToViewer viewerCommandToViewer;
+    private final PasswordEncoder passwordEncoder;
 
-    public ViewerServiceImpl(ViewerRepository viewerRepository, ViewerToViewerCommand viewerToViewerCommand, ViewerCommandToViewer viewerCommandToViewer) {
+    public ViewerServiceImpl(ViewerRepository viewerRepository, ViewerToViewerCommand viewerToViewerCommand, ViewerCommandToViewer viewerCommandToViewer, PasswordEncoder passwordEncoder) {
         this.viewerRepository = viewerRepository;
         this.viewerToViewerCommand = viewerToViewerCommand;
         this.viewerCommandToViewer = viewerCommandToViewer;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -57,7 +63,7 @@ public class ViewerServiceImpl implements ViewerService {
 
     @Transactional
     @Override
-    public ViewerCommand saveRecipeCommand(ViewerCommand command) {
+    public ViewerCommand saveViewerCommand(ViewerCommand command) {
         Viewer detachedViewer = viewerCommandToViewer.convert(command);
 
 //        Set<Viewer> viewerSet = new HashSet<>();
@@ -71,7 +77,7 @@ public class ViewerServiceImpl implements ViewerService {
 //            log.debug("Saved viewer id: " + savedViewer.getId());
 //            return viewerToViewerCommand.convert(savedViewer);
 //        }
-
+        detachedViewer.setPassword(passwordEncoder.encode(detachedViewer.getPassword()));
         Viewer savedViewer = viewerRepository.save(detachedViewer);
         log.debug("Saved viewer id: " + savedViewer.getId());
         return viewerToViewerCommand.convert(savedViewer);
@@ -80,5 +86,10 @@ public class ViewerServiceImpl implements ViewerService {
     @Override
     public void deleteById(Long idToDelete) {
         viewerRepository.deleteById(idToDelete);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return viewerRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("User %s not found", username)));
     }
 }
