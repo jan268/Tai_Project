@@ -41,7 +41,7 @@
                 <div class="panel-heading">
                     <div class="row">
                         <div class="col-md-11 ">
-                            <h1 class="panel-title">Movies</h1>
+                            <h1 class="panel-title" th:text="${viewer.username} + ' ' + Movies">Movies</h1>
                         </div>
                         <div class="col-md-1">
                             <a class="btn btn-default" href="#" th:href="@{'/viewer/' + ${viewer.id} + '/movie/new'}" role="button">New</a>

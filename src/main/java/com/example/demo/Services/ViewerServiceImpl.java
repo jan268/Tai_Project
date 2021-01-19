@@ -3,6 +3,7 @@ package com.example.demo.Services;
 import com.example.demo.Command.ViewerCommand;
 import com.example.demo.Converters.ViewerCommandToViewer;
 import com.example.demo.Converters.ViewerToViewerCommand;
+import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.model.Viewer;
 import com.example.demo.repositories.ViewerRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -48,8 +49,8 @@ public class ViewerServiceImpl implements ViewerService, UserDetailsService {
         Optional<Viewer>viewerOptional =viewerRepository.findById(id);
 
         if(!viewerOptional.isPresent()){
-            throw new RuntimeException("Recipe Not Found!");
-            //throw new NotFoundException("Viewer Not Found! For ID value: " + id);
+            //throw new RuntimeException("Viewer Not Found!");
+            throw new NotFoundException("Viewer Not Found! For ID value: " + id);
         }
 
         return viewerOptional.get();
