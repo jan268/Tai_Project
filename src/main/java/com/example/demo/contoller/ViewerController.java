@@ -78,11 +78,17 @@ public class ViewerController {
     }
 
     @GetMapping("/register")
-    public String initNewViewer(Model model){
+    public String initNewViewer(Model model, Principal principal){
+
+        if (principal == null){
 
         model.addAttribute("viewer", new ViewerCommand());
 
         return "register";
+
+        }
+
+        else return "redirect:/";
     }
 
     @PostMapping("/register")
