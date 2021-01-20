@@ -1,5 +1,6 @@
 package com.example.demo.contoller;
 
+import com.example.demo.exceptions.BadUserException;
 import com.example.demo.exceptions.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class ExceptionHandlerController {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(NumberFormatException.class)
+    @ExceptionHandler(BadUserException.class)
     public ModelAndView handleBadRequest(Exception exception){
         log.error("Handling Number Format Exception");
         log.error(exception.getMessage());

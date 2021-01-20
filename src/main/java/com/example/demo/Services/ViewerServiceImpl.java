@@ -3,6 +3,7 @@ package com.example.demo.Services;
 import com.example.demo.Command.ViewerCommand;
 import com.example.demo.Converters.ViewerCommandToViewer;
 import com.example.demo.Converters.ViewerToViewerCommand;
+import com.example.demo.exceptions.BadUserException;
 import com.example.demo.exceptions.NotFoundException;
 import com.example.demo.model.Viewer;
 import com.example.demo.repositories.ViewerRepository;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -56,6 +58,21 @@ public class ViewerServiceImpl implements ViewerService, UserDetailsService {
         return viewerOptional.get();
     }
 
+    @Override
+    public Viewer findById(Long id, Principal principal){
+        Optional<Viewer>viewerOptional =viewerRepository.findById(id);
+
+        if(principal.getName().equals(viewerOptional.get().getUsername())) {
+
+            if (!viewerOptional.isPresent()) {
+                //throw new RuntimeException("Viewer Not Found!");
+                throw new NotFoundException("Viewer Not Found! For ID value: " + id);
+            }
+
+            return viewerOptional.get();
+        }else throw new BadUserException("Log to proper user");
+    }
+
     @Transactional
     @Override
     public ViewerCommand findCommandById(Long l) {
@@ -64,20 +81,17 @@ public class ViewerServiceImpl implements ViewerService, UserDetailsService {
 
     @Transactional
     @Override
+    public ViewerCommand findCommandById(Long l, Principal principal) {
+
+        if(principal.getName().equals(viewerRepository.findById(l).get().getUsername())) {
+            return viewerToViewerCommand.convert(findById(l));
+        }else throw new BadUserException("Log to proper user");
+    }
+
+    @Transactional
+    @Override
     public ViewerCommand saveViewerCommand(ViewerCommand command) {
         Viewer detachedViewer = viewerCommandToViewer.convert(command);
-
-//        Set<Viewer> viewerSet = new HashSet<>();
-//        viewerRepository.findAll().iterator().forEachRemaining(viewerSet::add);
-//
-//        if(viewerSet.stream().filter(viewer -> viewer.getUsername().equals(detachedViewer.getUsername()))
-//                .findFirst().isPresent()){
-//                return
-//        }else {
-//            Viewer savedViewer = viewerRepository.save(detachedViewer);
-//            log.debug("Saved viewer id: " + savedViewer.getId());
-//            return viewerToViewerCommand.convert(savedViewer);
-//        }
         detachedViewer.setPassword(passwordEncoder.encode(detachedViewer.getPassword()));
         Viewer savedViewer = viewerRepository.save(detachedViewer);
         log.debug("Saved viewer id: " + savedViewer.getId());
@@ -87,6 +101,14 @@ public class ViewerServiceImpl implements ViewerService, UserDetailsService {
     @Override
     public void deleteById(Long idToDelete) {
         viewerRepository.deleteById(idToDelete);
+    }
+
+    @Override
+    public void deleteById(Long idToDelete, Principal principal) {
+
+        if(principal.getName().equals(viewerRepository.findById(idToDelete).get().getUsername())) {
+            viewerRepository.deleteById(idToDelete);
+        }else throw new BadUserException("Log to proper user");
     }
 
     @Override
