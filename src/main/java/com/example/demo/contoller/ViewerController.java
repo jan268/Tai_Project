@@ -101,7 +101,7 @@ public class ViewerController {
         }else {
             viewerService.saveViewerCommand(command);
 
-            return "redirect:/";
+            return "redirect:/login";
         }
     }
 }

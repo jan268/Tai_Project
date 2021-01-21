@@ -56,6 +56,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .rememberMe()
                     .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21))
                     .key("somethingverysecured")
+                    .userDetailsService(viewerService)
                     .rememberMeParameter("remember-me")
                 .and()
                 .logout()

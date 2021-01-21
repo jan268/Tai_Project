@@ -43,7 +43,7 @@
                                 <div class="col-md-3 form-group" th:class="${#fields.hasErrors('password')}
                                 ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
                                     <label>Password:</label>
-                                    <input type="text" class="form-control" th:field="*{password}" th:errorclass="has-error" required/>
+                                    <input type="password" class="form-control" th:field="*{password}" th:errorclass="has-error" required/>
                                     <span class="help-block" th:if="${#fields.hasErrors('password')}">
                                         <ul>
                                             <li th:each="err : ${#fields.errors('password')}" th:text="${err}"/>
