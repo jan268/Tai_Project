@@ -2,6 +2,7 @@ package com.example.demo.Command;
 
 import com.example.demo.Validation.UniqueEmail;
 import com.example.demo.Validation.UniqueUsername;
+import com.example.demo.Validation.UniqueViewer;
 import com.example.demo.model.Movie;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,12 +16,13 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@UniqueViewer
 public class ViewerCommand {
 
     private Long id;
 
     @NotBlank
-    @UniqueUsername
+    //@UniqueUsername
     private String username;
 
     @NotBlank
@@ -28,7 +30,7 @@ public class ViewerCommand {
 
     @Email
     @NotBlank
-    @UniqueEmail
+    //@UniqueEmail
     private String email;
 
     private Set<MovieCommand> movies = new HashSet<>();

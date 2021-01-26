@@ -70,7 +70,8 @@ public class ViewerController {
         if (command.getUsername().equals(viewerCommand.getUsername()))
         {
             if (command.getEmail().equals(viewerCommand.getEmail()))
-                return "redirect:/";
+                if (command.getPassword().isBlank())
+                    return "redirect:/";
         }
 
         if (bindingResult.hasErrors()){
