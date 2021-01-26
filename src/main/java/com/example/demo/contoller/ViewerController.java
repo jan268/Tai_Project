@@ -65,6 +65,14 @@ public class ViewerController {
     @PostMapping("/viewer/new")
     public String processUpdateViewer(@Valid @ModelAttribute("viewer")ViewerCommand command, BindingResult bindingResult){
 
+        ViewerCommand viewerCommand = viewerService.findCommandById(command.getId());
+
+        if (command.getUsername().equals(viewerCommand.getUsername()))
+        {
+            if (command.getEmail().equals(viewerCommand.getEmail()))
+                return "redirect:/";
+        }
+
         if (bindingResult.hasErrors()){
             bindingResult.getAllErrors().forEach(objectError -> {
                 log.debug(objectError.toString());
