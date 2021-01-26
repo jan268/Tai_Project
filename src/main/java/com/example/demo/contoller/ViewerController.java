@@ -80,9 +80,13 @@ public class ViewerController {
             });
             return "viewer/viewerform";
         }else {
+
             viewerService.saveViewerCommand(command);
 
-            return "redirect:/";
+            if (!command.getUsername().equals(viewerCommand.getUsername()))
+            {
+                return "redirect:/logout";
+            }else return "redirect:/";
         }
     }
 
