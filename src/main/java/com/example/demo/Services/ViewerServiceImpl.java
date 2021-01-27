@@ -5,12 +5,15 @@ import com.example.demo.Converters.ViewerCommandToViewer;
 import com.example.demo.Converters.ViewerToViewerCommand;
 import com.example.demo.exceptions.BadUserException;
 import com.example.demo.exceptions.NotFoundException;
+import com.example.demo.exceptions.WrongPassword;
 import com.example.demo.model.Viewer;
 import com.example.demo.repositories.ViewerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -91,11 +94,17 @@ public class ViewerServiceImpl implements ViewerService, UserDetailsService {
     @Transactional
     @Override
     public ViewerCommand saveViewerCommand(ViewerCommand command) {
+
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         Viewer detachedViewer = viewerCommandToViewer.convert(command);
-        detachedViewer.setPassword(passwordEncoder.encode(detachedViewer.getPassword()));
-        Viewer savedViewer = viewerRepository.save(detachedViewer);
-        log.debug("Saved viewer id: " + savedViewer.getId());
-        return viewerToViewerCommand.convert(savedViewer);
+
+        if (encoder.matches(detachedViewer.getPassword(), viewerRepository.findById(detachedViewer.getId()).get().getPassword())) {
+
+            detachedViewer.setPassword(passwordEncoder.encode(detachedViewer.getPassword()));
+            Viewer savedViewer = viewerRepository.save(detachedViewer);
+            log.debug("Saved viewer id: " + savedViewer.getId());
+            return viewerToViewerCommand.convert(savedViewer);
+        }else throw new WrongPassword("Wrong Password");
     }
 
     @Override

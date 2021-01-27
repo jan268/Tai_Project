@@ -26,7 +26,7 @@ public class BootStrapMySQL implements ApplicationListener<ContextRefreshedEvent
         Viewer jan = new Viewer();
         jan.setEmail("jan.witek88@gmail.com");
         jan.setUsername("Jan");
-        jan.setPassword(passwordEncoder.encode("password"));
+        jan.setPassword(passwordEncoder.encode("J@nek268"));
 
 
         Movie swotr = new Movie();
@@ -51,7 +51,7 @@ public class BootStrapMySQL implements ApplicationListener<ContextRefreshedEvent
         Viewer natalia = new Viewer();
         natalia.setEmail("natalia.krukar@gmail.com");
         natalia.setUsername("Natalia");
-        natalia.setPassword(passwordEncoder.encode("jan"));
+        natalia.setPassword(passwordEncoder.encode("N@talia1"));
 
         Movie call = new Movie();
         call.setViewer(natalia);

@@ -2,6 +2,7 @@ package com.example.demo.contoller;
 
 import com.example.demo.exceptions.BadUserException;
 import com.example.demo.exceptions.NotFoundException;
+import com.example.demo.exceptions.WrongPassword;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -34,6 +35,19 @@ public class ExceptionHandlerController {
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/exceptions/400error");
+        modelAndView.addObject("exception", exception);
+
+        return modelAndView;
+    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(WrongPassword.class)
+    public ModelAndView handleWrongPassword(Exception exception){
+        log.error("Handling Wrong Passwordt Exception");
+        log.error(exception.getMessage());
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("/exceptions/403error");
         modelAndView.addObject("exception", exception);
 
         return modelAndView;
